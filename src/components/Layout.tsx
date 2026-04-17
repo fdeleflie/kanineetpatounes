@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, PawPrint, Scissors, Cat, Calendar, MapPin, Phone, Mail, Settings, LogIn, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -10,6 +10,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const { config } = useConfig();
   const { user, isAdmin, logout } = useAuth();
+
+  // Mettre à jour le titre de l'onglet avec le nom du site configuré
+  useEffect(() => {
+    if (config?.name) {
+      document.title = config.name;
+    }
+  }, [config?.name]);
 
   const navItems = [
     { path: '/', label: 'Accueil', icon: PawPrint },
