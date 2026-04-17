@@ -1,8 +1,13 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { useConfig } from '../contexts/ConfigContext';
 
 export default function Contact() {
+  const { config } = useConfig();
+
+  if (!config) return null;
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -25,7 +30,7 @@ export default function Contact() {
               <MapPin className="w-5 h-5" />
             </div>
             <h3 className="font-semibold text-stone-900 mb-1">Adresse</h3>
-            <p className="text-stone-600">La Bassée (59)</p>
+            <p className="text-stone-600">{config.address}</p>
           </div>
 
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-100">
@@ -33,7 +38,7 @@ export default function Contact() {
               <Phone className="w-5 h-5" />
             </div>
             <h3 className="font-semibold text-stone-900 mb-1">Téléphone</h3>
-            <p className="text-stone-600">06 XX XX XX XX</p>
+            <p className="text-stone-600">{config.phone}</p>
           </div>
 
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-100">
@@ -41,7 +46,7 @@ export default function Contact() {
               <Mail className="w-5 h-5" />
             </div>
             <h3 className="font-semibold text-stone-900 mb-1">Email</h3>
-            <p className="text-stone-600 break-all">kdeleflie@gmail.com</p>
+            <p className="text-stone-600 break-all">{config.email}</p>
           </div>
         </div>
 
@@ -49,7 +54,7 @@ export default function Contact() {
         <div className="md:col-span-2">
           <div className="bg-white p-8 rounded-2xl shadow-sm border border-stone-100">
             <h2 className="text-2xl font-bold text-stone-900 mb-6">Envoyez-nous un message</h2>
-            <form action="https://formspree.io/f/xvovpznl" method="POST" className="space-y-6">
+            <form action={`https://formspree.io/f/${config.formspreeId}`} method="POST" className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-stone-700 mb-1">
                   Votre nom

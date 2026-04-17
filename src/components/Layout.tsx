@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, PawPrint, Scissors, Cat, Calendar, MapPin, Phone, Mail } from 'lucide-react';
+import { Menu, X, PawPrint, Scissors, Cat, Calendar, MapPin, Phone, Mail, Settings, LogIn, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useConfig } from '../contexts/ConfigContext';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { config } = useConfig();
+  const { user, isAdmin, logout } = useAuth();
 
   const navItems = [
     { path: '/', label: 'Accueil', icon: PawPrint },
@@ -13,6 +17,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { path: '/boarding', label: 'Pension Féline', icon: Cat },
     { path: '/contact', label: 'Contact & Réservation', icon: Calendar },
   ];
+
+  if (user && isAdmin) {
+    navItems.push({ path: '/config', label: 'Configuration', icon: Settings });
+  } else if (!user) {
+    navItems.push({ path: '/config', label: 'Connexion', icon: LogIn });
+  }
+
+  if (!config) return <div className="min-h-screen bg-stone-50 flex items-center justify-center">Chargement...</div>;
 
   return (
     <div className="min-h-screen flex flex-col bg-stone-50 font-sans text-stone-800">
@@ -26,7 +38,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <PawPrint className="h-6 w-6 text-white" />
                 </div>
                 <span className="font-bold text-xl tracking-tight text-stone-900">
-                  Ka'nine & Patounes
+                  {config.name}
                 </span>
               </Link>
             </div>
@@ -50,6 +62,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   </Link>
                 );
               })}
+              {user && (
+                <button
+                  onClick={logout}
+                  className="px-3 py-2 rounded-md text-sm font-medium text-stone-600 hover:bg-stone-100 hover:text-stone-900 transition-colors duration-200 flex items-center gap-1.5"
+                  title="Déconnexion"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -111,11 +132,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <h3 className="text-sm font-semibold text-stone-500 tracking-wider uppercase mb-4">
-                Ka'nine & Patounes
+                {config.name}
               </h3>
               <p className="text-base text-stone-600">
-                Salon de toilettage et pension féline familiale à La Bassée.
-                Douceur et confort pour vos compagnons.
+                {config.tagline}
               </p>
             </div>
             <div>
@@ -125,15 +145,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <ul className="space-y-3">
                 <li className="flex items-center text-stone-600">
                   <MapPin className="h-5 w-5 text-orange-500 mr-2" />
-                  La Bassée (59)
+                  {config.address}
                 </li>
                 <li className="flex items-center text-stone-600">
                   <Phone className="h-5 w-5 text-orange-500 mr-2" />
-                  06 XX XX XX XX
+                  {config.phone}
                 </li>
                 <li className="flex items-center text-stone-600">
                   <Mail className="h-5 w-5 text-orange-500 mr-2" />
-                  kdeleflie@gmail.com
+                  {config.email}
                 </li>
               </ul>
             </div>
@@ -141,16 +161,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <h3 className="text-sm font-semibold text-stone-500 tracking-wider uppercase mb-4">
                 Horaires
               </h3>
-              <p className="text-base text-stone-600">
-                Sur rendez-vous uniquement.
-                <br />
-                N'hésitez pas à nous contacter pour plus d'informations.
+              <p className="text-base text-stone-600 whitespace-pre-wrap">
+                {config.hours}
               </p>
             </div>
           </div>
           <div className="mt-8 border-t border-stone-200 pt-8 text-center">
             <p className="text-base text-stone-400">
-              &copy; {new Date().getFullYear()} Ka'nine & Patounes. Tous droits réservés.
+              &copy; {new Date().getFullYear()} {config.name}. Tous droits réservés.
             </p>
           </div>
         </div>

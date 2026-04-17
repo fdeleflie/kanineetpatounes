@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Scissors, Check, Info } from 'lucide-react';
+import { useConfig } from '../contexts/ConfigContext';
 
 export default function Grooming() {
   const [activeTab, setActiveTab] = useState<'services' | 'pricing'>('services');
+  const { config, services } = useConfig();
+  
+  if (!config) return null;
+
+  const groomingServices = services.filter(s => s.category === 'grooming');
 
   return (
     <motion.div 
@@ -17,8 +23,8 @@ export default function Grooming() {
           <Scissors className="w-8 h-8" />
         </div>
         <h1 className="text-3xl md:text-4xl font-bold text-stone-900 mb-4">Salon de Toilettage</h1>
-        <p className="text-lg text-stone-600 max-w-2xl mx-auto">
-          Nous accueillons toutes les races pour des soins adaptés et personnalisés.
+        <p className="text-lg text-stone-600 max-w-2xl mx-auto whitespace-pre-wrap">
+          {config.groomingSubtitle}
         </p>
       </div>
 
@@ -56,7 +62,7 @@ export default function Grooming() {
             animate={{ opacity: 1, x: 0 }}
             className="p-8 md:p-12"
           >
-            <h2 className="text-2xl font-bold text-stone-900 mb-6">Nos Prestations</h2>
+            <h2 className="text-2xl font-bold text-stone-900 mb-6">{config.groomingServicesTitle}</h2>
             <div className="grid gap-6">
               {[
                 "Bain, brushing et démêlage soigneux",
@@ -77,8 +83,8 @@ export default function Grooming() {
             
             <div className="mt-8 p-4 bg-blue-50 rounded-xl flex items-start">
               <Info className="w-5 h-5 text-blue-600 mt-0.5 mr-3 flex-shrink-0" />
-              <p className="text-sm text-blue-800">
-                Nous utilisons des produits de haute qualité adaptés au type de poil et à la peau de votre animal.
+              <p className="text-sm text-blue-800 whitespace-pre-wrap">
+                {config.groomingServicesNote}
               </p>
             </div>
           </motion.div>
@@ -88,9 +94,9 @@ export default function Grooming() {
             animate={{ opacity: 1, x: 0 }}
             className="p-8 md:p-12"
           >
-            <h2 className="text-2xl font-bold text-stone-900 mb-6">Tarifs Indicatifs</h2>
-            <p className="text-stone-500 mb-8 text-sm">
-              Les tarifs peuvent varier selon l'état du pelage et le comportement de l'animal.
+            <h2 className="text-2xl font-bold text-stone-900 mb-6">{config.groomingPricingTitle}</h2>
+            <p className="text-stone-500 mb-8 text-sm whitespace-pre-wrap">
+              {config.groomingPricingNote}
             </p>
             
             <div className="overflow-hidden rounded-xl border border-stone-200">
@@ -106,21 +112,23 @@ export default function Grooming() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-stone-200">
-                  {[
-                    { type: "Petit chien", price: "35€" },
-                    { type: "Chien moyen", price: "45€" },
-                    { type: "Grand chien", price: "60€" },
-                    { type: "Chat", price: "40€" },
-                  ].map((row, index) => (
-                    <tr key={index} className="hover:bg-stone-50 transition-colors">
+                  {groomingServices.map((row) => (
+                    <tr key={row.id} className="hover:bg-stone-50 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">
-                        {row.type}
+                        {row.title}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-600 text-right font-semibold">
                         {row.price}
                       </td>
                     </tr>
                   ))}
+                  {groomingServices.length === 0 && (
+                    <tr>
+                      <td colSpan={2} className="px-6 py-10 text-center text-stone-400 italic">
+                        Aucun tarif configuré pour le moment.
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>

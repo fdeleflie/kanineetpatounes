@@ -1,9 +1,14 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ArrowRight, Star } from 'lucide-react';
+import { ArrowRight, Star, Link as LinkIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useConfig } from '../contexts/ConfigContext';
 
 export default function Home() {
+  const { config, links } = useConfig();
+
+  if (!config) return null;
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -17,14 +22,13 @@ export default function Home() {
           <div className="space-y-6">
             <div className="inline-flex items-center px-3 py-1 rounded-full bg-orange-100 text-orange-600 text-sm font-medium">
               <Star className="w-4 h-4 mr-1 fill-current" />
-              Bienvenue à La Bassée
+              Bienvenue à {config.address.split('(')[0].trim()}
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-stone-900 leading-tight">
-              Le bien-être de vos compagnons avant tout
+              {config.tagline}
             </h1>
-            <p className="text-lg text-stone-600 leading-relaxed">
-              Structure familiale proposant un double service dédié au bonheur de vos animaux : 
-              Toilettage complet et Pension féline chaleureuse.
+            <p className="text-lg text-stone-600 leading-relaxed whitespace-pre-wrap">
+              {config.description}
             </p>
             <div className="flex flex-wrap gap-4">
               <Link 
@@ -40,12 +44,24 @@ export default function Home() {
               >
                 Découvrir nos services
               </Link>
+              {links.map(l => (
+                <a 
+                  key={l.id}
+                  href={l.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-6 py-3 border border-stone-300 text-base font-medium rounded-xl text-stone-700 bg-white hover:bg-stone-50 transition-colors"
+                >
+                  <LinkIcon className="w-4 h-4 mr-2" />
+                  {l.label}
+                </a>
+              ))}
             </div>
           </div>
           <div className="relative h-64 md:h-96 rounded-2xl overflow-hidden shadow-lg transform rotate-2 hover:rotate-0 transition-transform duration-500">
             <img 
-              src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?q=80&w=1000" 
-              alt="Chien heureux" 
+              src={config.heroImageUrl || `https://picsum.photos/seed/${config.logoSeed}/1920/1080`} 
+              alt="Accueil" 
               className="absolute inset-0 w-full h-full object-cover"
               referrerPolicy="no-referrer"
             />
