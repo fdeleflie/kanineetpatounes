@@ -183,6 +183,15 @@ function GeneralConfig({ config, onSave }: { config: SiteConfig, onSave: (c: Par
           <InputField label="Titre section 'Prestations'" value={localConfig.groomingServicesTitle} onChange={v => setLocalConfig({...localConfig, groomingServicesTitle: v})} />
           <InputField label="Titre section 'Tarifs'" value={localConfig.groomingPricingTitle} onChange={v => setLocalConfig({...localConfig, groomingPricingTitle: v})} />
         </div>
+        <div>
+          <label className="block text-sm font-medium text-stone-700 mb-2">Liste des prestations (1 par ligne)</label>
+          <textarea
+            className="w-full px-4 py-3 rounded-lg border border-stone-200 outline-none focus:ring-2 focus:ring-orange-500"
+            rows={6}
+            value={localConfig.groomingServicesList || ''}
+            onChange={e => setLocalConfig({...localConfig, groomingServicesList: e.target.value})}
+          />
+        </div>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-stone-700 mb-2">Note (bas des prestations)</label>

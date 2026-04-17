@@ -10,6 +10,7 @@ export default function Grooming() {
   if (!config) return null;
 
   const groomingServices = services.filter(s => s.category === 'grooming');
+  const groomingListItems = (config.groomingServicesList || '').split('\n').filter(s => s.trim());
 
   return (
     <motion.div 
@@ -64,14 +65,7 @@ export default function Grooming() {
           >
             <h2 className="text-2xl font-bold text-stone-900 mb-6">{config.groomingServicesTitle}</h2>
             <div className="grid gap-6">
-              {[
-                "Bain, brushing et démêlage soigneux",
-                "Tonte adaptée à la race et à la saison",
-                "Coupe ciseaux pour une finition parfaite",
-                "Épilation (Trimming) pour les races à poil dur",
-                "Coupe des griffes incluse",
-                "Nettoyage des oreilles et des yeux"
-              ].map((item, index) => (
+              {groomingListItems.map((item, index) => (
                 <div key={index} className="flex items-start">
                   <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-0.5 mr-4">
                     <Check className="w-4 h-4 text-green-600" />

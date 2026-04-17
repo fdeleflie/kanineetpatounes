@@ -16,6 +16,7 @@ export interface SiteConfig {
 
   // Toilettage (Grooming)
   groomingSubtitle: string;
+  groomingServicesList: string;
   groomingServicesTitle: string;
   groomingServicesNote: string;
   groomingPricingTitle: string;
@@ -78,6 +79,7 @@ const DEFAULT_CONFIG: SiteConfig = {
   formspreeId: "xvovpznl",
 
   groomingSubtitle: "Nous accueillons toutes les races pour des soins adaptés et personnalisés.",
+  groomingServicesList: "Bain, brushing et démêlage soigneux\nTonte adaptée à la race et à la saison\nCoupe ciseaux pour une finition parfaite\nÉpilation (Trimming) pour les races à poil dur\nCoupe des griffes incluse\nNettoyage des oreilles et des yeux",
   groomingServicesTitle: "Nos Prestations",
   groomingServicesNote: "Nous utilisons des produits de haute qualité adaptés au type de poil et à la peau de votre animal.",
   groomingPricingTitle: "Tarifs Indicatifs",
