@@ -6,8 +6,10 @@ import {defineConfig, loadEnv} from 'vite';
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
   return {
+    // Paramétrage pour la publication sur GitHub Pages
+    // Utilise le nom du dépôt quand le build est exécuté via GitHub Actions, sinon utilise la racine '/' (pour AI Studio)
+    base: process.env.GITHUB_ACTIONS ? '/kanineetpatounes/' : '/',
     plugins: [react(), tailwindcss()],
-    base: '/kanineetpatounes/',
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
     },
