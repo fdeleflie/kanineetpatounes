@@ -155,6 +155,17 @@ function GeneralConfig({ config, onSave }: { config: SiteConfig, onSave: (c: Par
             onChange={e => setLocalConfig({...localConfig, heroImageUrl: e.target.value})}
           />
         </div>
+        <div>
+          <label className="block text-sm font-medium text-stone-700 mb-2">Galerie Photos Accueil (1 lien par ligne, max 6)</label>
+          <textarea
+            className="w-full px-4 py-3 rounded-lg border border-stone-200 outline-none focus:ring-2 focus:ring-orange-500 font-mono text-sm"
+            rows={4}
+            placeholder="https://..."
+            value={localConfig.homeGalleryUrls || ''}
+            onChange={e => setLocalConfig({...localConfig, homeGalleryUrls: e.target.value})}
+          />
+          <p className="text-xs text-stone-500 mt-1">S'afficheront sous l'en-tête de la page d'accueil. Assurez-vous que le lien se termine bien par .jpg ou .png</p>
+        </div>
         <div className="grid md:grid-cols-2 gap-6">
           <InputField label="Adresse" value={localConfig.address} onChange={v => setLocalConfig({...localConfig, address: v})} />
           <InputField label="Téléphone" value={localConfig.phone} onChange={v => setLocalConfig({...localConfig, phone: v})} />
@@ -187,13 +198,13 @@ function GeneralConfig({ config, onSave }: { config: SiteConfig, onSave: (c: Par
         <div>
           <label className="block text-sm font-medium text-stone-700 mb-2">Photos Avant / Après (1 lien d'image par ligne, max 6)</label>
           <textarea
-            className="w-full px-4 py-3 rounded-lg border border-stone-200 outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full px-4 py-3 rounded-lg border border-stone-200 outline-none focus:ring-2 focus:ring-orange-500 font-mono text-sm"
             rows={4}
             placeholder="https://..."
             value={localConfig.groomingGalleryUrls || ''}
             onChange={e => setLocalConfig({...localConfig, groomingGalleryUrls: e.target.value})}
           />
-          <p className="text-xs text-stone-500 mt-1">Collez ici les adresses (URL) de vos photos. Astuce : vous pouvez héberger vos images sur des sites gratuits ou utiliser des liens vers Facebook/Google Photos.</p>
+          <p className="text-xs text-stone-500 mt-1">Collez ici les adresses (URL) de vos photos. Assurez-vous que le lien se termine bien par .jpg ou .png</p>
         </div>
         <div className="grid md:grid-cols-2 gap-6">
           <InputField label="Titre section 'Prestations'" value={localConfig.groomingServicesTitle} onChange={v => setLocalConfig({...localConfig, groomingServicesTitle: v})} />

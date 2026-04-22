@@ -11,7 +11,11 @@ export default function Grooming() {
 
   const groomingServices = services.filter(s => s.category === 'grooming');
   const groomingListItems = (config.groomingServicesList || '').split('\n').filter(s => s.trim());
-  const galleryUrls = (config.groomingGalleryUrls || '').split('\n').filter(s => s.trim()).slice(0, 6);
+  const galleryUrls = (config.groomingGalleryUrls || '')
+    .split(/[\n,;]+/)
+    .map(s => s.trim().replace(/\s+/g, ''))
+    .filter(Boolean)
+    .slice(0, 6);
 
   return (
     <motion.div 
@@ -33,15 +37,22 @@ export default function Grooming() {
         {galleryUrls.length > 0 && (
           <div className="mt-10 grid grid-cols-2 md:grid-cols-3 gap-4">
             {galleryUrls.map((url, i) => (
-              <div key={i} className="aspect-square rounded-2xl overflow-hidden shadow-sm border border-stone-100 bg-stone-50">
+              <div key={i} className="aspect-square rounded-2xl overflow-hidden shadow-sm border border-stone-200 bg-stone-100 relative group flex items-center justify-center">
                 <img 
                   src={url} 
                   alt={`Réalisation avant/après ${i + 1}`} 
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" 
+                  className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-500 z-10" 
                   referrerPolicy="no-referrer"
                   onError={(e) => {
-                    // Fallback to hide broken images
-                    (e.target as HTMLImageElement).style.display = 'none';
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none'; // Completely hide broken image
+                    const parent = target.parentElement;
+                    if (parent && !parent.querySelector('.error-msg')) {
+                      const errorDiv = document.createElement('div');
+                      errorDiv.className = 'error-msg flex flex-col items-center justify-center p-4 text-center z-0 w-full h-full';
+                      errorDiv.innerHTML = '<span class="text-red-500 font-bold mb-1 text-sm bg-red-50 px-2 py-1 rounded">URL Invalide</span><span class="text-xs text-stone-500 max-w-full break-all mt-2">' + url.substring(0, 30) + '...</span>';
+                      parent.appendChild(errorDiv);
+                    }
                   }}
                 />
               </div>

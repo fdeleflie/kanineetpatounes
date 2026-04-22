@@ -12,6 +12,7 @@ export interface SiteConfig {
   hours: string;
   logoSeed: string; // Keeping for backward compatibility or future use
   heroImageUrl: string;
+  homeGalleryUrls: string;
   formspreeId: string;
 
   // Toilettage (Grooming)
@@ -77,6 +78,7 @@ const DEFAULT_CONFIG: SiteConfig = {
   hours: "Sur rendez-vous uniquement.",
   logoSeed: "vibrant",
   heroImageUrl: "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?q=80&w=1000",
+  homeGalleryUrls: "",
   formspreeId: "xvovpznl",
 
   groomingSubtitle: "Nous accueillons toutes les races pour des soins adaptés et personnalisés.",

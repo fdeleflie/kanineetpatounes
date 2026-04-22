@@ -9,6 +9,12 @@ export default function Home() {
 
   if (!config) return null;
 
+  const homeGalleryUrls = (config.homeGalleryUrls || '')
+    .split(/[\n,;]+/)
+    .map(s => s.trim().replace(/\s+/g, ''))
+    .filter(Boolean)
+    .slice(0, 6);
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -28,7 +34,7 @@ export default function Home() {
               {config.tagline}
             </h1>
             <div 
-              className="text-lg text-stone-600 leading-relaxed [&_p]:mb-4 last:[&_p]:mb-0 w-full break-words whitespace-pre-wrap"
+              className="text-lg text-stone-600 leading-relaxed [&_p]:mb-2 last:[&_p]:mb-0 w-full break-words"
               dangerouslySetInnerHTML={{ __html: config.description.replace(/&nbsp;/g, ' ') }}
             />
             <div className="flex flex-wrap gap-4 pt-2">
@@ -69,6 +75,35 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Home Gallery Section */}
+      {homeGalleryUrls.length > 0 && (
+        <section className="bg-white p-8 rounded-2xl shadow-sm border border-stone-100">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {homeGalleryUrls.map((url, i) => (
+              <div key={i} className="aspect-square rounded-2xl overflow-hidden shadow-sm border border-stone-200 bg-stone-100 relative group flex items-center justify-center">
+                <img 
+                  src={url} 
+                  alt={`Photo galerie accueil ${i + 1}`} 
+                  className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-500 z-10" 
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none'; // Completely hide broken image
+                    const parent = target.parentElement;
+                    if (parent && !parent.querySelector('.error-msg')) {
+                      const errorDiv = document.createElement('div');
+                      errorDiv.className = 'error-msg flex flex-col items-center justify-center p-4 text-center z-0 w-full h-full';
+                      errorDiv.innerHTML = '<span class="text-red-500 font-bold mb-1 text-sm bg-red-50 px-2 py-1 rounded">URL Invalide</span><span class="text-xs text-stone-500 max-w-full break-all mt-2">' + url.substring(0, 30) + '...</span>';
+                      parent.appendChild(errorDiv);
+                    }
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Features Grid */}
       <section className="grid md:grid-cols-2 gap-8">
