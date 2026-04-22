@@ -5,6 +5,8 @@ import { motion } from 'motion/react';
 import { Save, Plus, Trash2, LogIn, Settings, List, Phone, Clock, Link as LinkIcon } from 'lucide-react';
 import { db, handleFirestoreError, OperationType } from '../firebase';
 import { doc, deleteDoc, setDoc, collection, addDoc } from 'firebase/firestore';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 
 export default function Config() {
   const { config, services, boardingFeatures, links, updateConfig, loading } = useConfig();
@@ -133,12 +135,15 @@ function GeneralConfig({ config, onSave }: { config: SiteConfig, onSave: (c: Par
         </div>
         <div>
           <label className="block text-sm font-medium text-stone-700 mb-2">Description Accueil</label>
-          <textarea
-            className="w-full px-4 py-3 rounded-lg border border-stone-200 outline-none focus:ring-2 focus:ring-orange-500"
-            rows={4}
-            value={localConfig.description}
-            onChange={e => setLocalConfig({...localConfig, description: e.target.value})}
-          />
+          <div className="bg-white rounded-lg">
+            <ReactQuill 
+              theme="snow"
+              value={localConfig.description} 
+              onChange={v => setLocalConfig({...localConfig, description: v})}
+              className="bg-white rounded-lg"
+            />
+          </div>
+          <p className="text-xs text-stone-500 mt-2">Vous pouvez mettre en gras, en italique, ou souligner le texte principal.</p>
         </div>
         <div>
           <label className="block text-sm font-medium text-stone-700 mb-2">Image Principale (Lien Web URL)</label>
@@ -178,6 +183,17 @@ function GeneralConfig({ config, onSave }: { config: SiteConfig, onSave: (c: Par
             value={localConfig.groomingSubtitle}
             onChange={e => setLocalConfig({...localConfig, groomingSubtitle: e.target.value})}
           />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-stone-700 mb-2">Photos Avant / Après (1 lien d'image par ligne, max 6)</label>
+          <textarea
+            className="w-full px-4 py-3 rounded-lg border border-stone-200 outline-none focus:ring-2 focus:ring-orange-500"
+            rows={4}
+            placeholder="https://..."
+            value={localConfig.groomingGalleryUrls || ''}
+            onChange={e => setLocalConfig({...localConfig, groomingGalleryUrls: e.target.value})}
+          />
+          <p className="text-xs text-stone-500 mt-1">Collez ici les adresses (URL) de vos photos. Astuce : vous pouvez héberger vos images sur des sites gratuits ou utiliser des liens vers Facebook/Google Photos.</p>
         </div>
         <div className="grid md:grid-cols-2 gap-6">
           <InputField label="Titre section 'Prestations'" value={localConfig.groomingServicesTitle} onChange={v => setLocalConfig({...localConfig, groomingServicesTitle: v})} />

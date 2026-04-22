@@ -18,19 +18,20 @@ export default function Home() {
     >
       {/* Hero Section */}
       <section className="relative bg-orange-50 rounded-3xl overflow-hidden shadow-sm border border-orange-100">
-        <div className="grid md:grid-cols-2 gap-8 items-center p-8 md:p-12">
-          <div className="space-y-6">
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-orange-100 text-orange-600 text-sm font-medium">
+        <div className="grid lg:grid-cols-2 gap-8 items-center p-8 md:p-12">
+          <div className="space-y-6 flex flex-col min-w-0 z-10 relative">
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-orange-100 text-orange-600 text-sm font-medium self-start">
               <Star className="w-4 h-4 mr-1 fill-current" />
               Bienvenue à {config.address.split('(')[0].trim()}
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-stone-900 leading-tight">
               {config.tagline}
             </h1>
-            <p className="text-lg text-stone-600 leading-relaxed whitespace-pre-wrap">
-              {config.description}
-            </p>
-            <div className="flex flex-wrap gap-4">
+            <div 
+              className="text-lg text-stone-600 leading-relaxed [&_p]:mb-4 last:[&_p]:mb-0 w-full break-words whitespace-pre-wrap"
+              dangerouslySetInnerHTML={{ __html: config.description.replace(/&nbsp;/g, ' ') }}
+            />
+            <div className="flex flex-wrap gap-4 pt-2">
               <Link 
                 to="/contact" 
                 className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl shadow-sm text-white bg-orange-600 hover:bg-orange-700 transition-colors"

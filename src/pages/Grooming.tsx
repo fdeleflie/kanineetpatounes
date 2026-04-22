@@ -11,6 +11,7 @@ export default function Grooming() {
 
   const groomingServices = services.filter(s => s.category === 'grooming');
   const groomingListItems = (config.groomingServicesList || '').split('\n').filter(s => s.trim());
+  const galleryUrls = (config.groomingGalleryUrls || '').split('\n').filter(s => s.trim()).slice(0, 6);
 
   return (
     <motion.div 
@@ -27,6 +28,26 @@ export default function Grooming() {
         <p className="text-lg text-stone-600 max-w-2xl mx-auto whitespace-pre-wrap">
           {config.groomingSubtitle}
         </p>
+        
+        {/* Avant/Après Gallery */}
+        {galleryUrls.length > 0 && (
+          <div className="mt-10 grid grid-cols-2 md:grid-cols-3 gap-4">
+            {galleryUrls.map((url, i) => (
+              <div key={i} className="aspect-square rounded-2xl overflow-hidden shadow-sm border border-stone-100 bg-stone-50">
+                <img 
+                  src={url} 
+                  alt={`Réalisation avant/après ${i + 1}`} 
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" 
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    // Fallback to hide broken images
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Tabs */}
